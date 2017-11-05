@@ -16,7 +16,7 @@ import (
 // https://stackoverflow.com/a/22312124
 var gitURL = regexp.MustCompile(`(?s)((git|ssh|http(s)?)|(git@[\w\.]+))(:(//)?)([\w\.@\:/\-~]+)(\.git)(/)?`)
 
-const cloneDesc = "Clone a repository into a new directory and add to workspace."
+const cloneDesc = "Clone a repository into a new directory and add to the workspace."
 const cloneHelp = `
 --- TODO ---
 `
