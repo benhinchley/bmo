@@ -4,7 +4,7 @@
 # WIP: This is the opposite of stable, and not complete
 
 ## Why?
-cause sometimes it's more work to make a monorepo, that is
+cause sometimes it's more work to make a monorepo, than it is
 to make a tool.
 
 ```shell
