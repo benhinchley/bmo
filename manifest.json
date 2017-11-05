@@ -1,0 +1,16 @@
+{
+    "dependencies": {
+        "github.com/go-ini/ini": {
+            "branch": "master"
+        },
+        "github.com/mitchellh/go-homedir": {
+            "branch": "master"
+        },
+        "github.com/sanity-io/litter": {
+            "branch": "master"
+        },
+        "gopkg.in/src-d/go-git.v4": {
+            "branch": "v4"
+        }
+    }
+}
