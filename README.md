@@ -7,7 +7,7 @@
 cause sometimes it's more work to make a monorepo, than it is
 to make a tool.
 
-```shell
+```
 $ bmo help
 bmo is a tool for managing many repositories as if they were a monorepo.
 
