@@ -58,6 +58,7 @@ func (c *config) Run() int {
 	cmds := []command{
 		&cloneCommand{},
 		&logCommand{},
+		&statusCommand{},
 	}
 
 	stdout := log.New(c.Stdout, "", 0)

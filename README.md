@@ -17,6 +17,7 @@ Commands:
 
   clone  Clone a repository into a new directory and add to the workspace.
   log    Show the commit logs for the workspace.
+  status  Show the working tree status for the workspace.
 
 Use "bmo help [command]" for more information about a command.
 ```
