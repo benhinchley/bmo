@@ -33,13 +33,13 @@ func (cmd *statusCommand) Register(fs *flag.FlagSet) {
 
 func (cmd *statusCommand) Run(ctx cmd.Context, args []string) error {
 	if len(args) < 1 {
-		return fmt.Errorf("status: not enough arguments provided")
+		return fmt.Errorf("not enough arguments provided")
 	}
 
 	workspace := args[0]
 	s, err := ctx.(*context).Config.GetSection(fmt.Sprintf("workspace.%s", workspace))
 	if err != nil {
-		return fmt.Errorf("status: %s does not exist: %v", workspace, err)
+		return fmt.Errorf("%s does not exist: %v", workspace, err)
 	}
 
 	repos := s.Key("repos").Strings(",")
@@ -47,15 +47,15 @@ func (cmd *statusCommand) Run(ctx cmd.Context, args []string) error {
 	for _, repo := range repos {
 		r, err := git.PlainOpen(repo)
 		if err != nil {
-			return fmt.Errorf("status: unable to open repo \"%s\": %v", filepath.Base(repo), err)
+			return fmt.Errorf("unable to open repo \"%s\": %v", filepath.Base(repo), err)
 		}
 		wt, err := r.Worktree()
 		if err != nil {
-			return fmt.Errorf("status: unable to get repository worktree: %v", err)
+			return fmt.Errorf("unable to get repository worktree: %v", err)
 		}
 		st, err := wt.Status()
 		if err != nil {
-			return fmt.Errorf("status: unable to get repository worktree status: %v", err)
+			return fmt.Errorf("unable to get repository worktree status: %v", err)
 		}
 
 		wg.Add(1)

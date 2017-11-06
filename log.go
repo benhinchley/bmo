@@ -32,13 +32,13 @@ func (cmd *logCommand) Register(fs *flag.FlagSet) {
 
 func (cmd *logCommand) Run(ctx cmd.Context, args []string) error {
 	if len(args) < 1 {
-		return fmt.Errorf("log: not enough arguments provided")
+		return fmt.Errorf("not enough arguments provided")
 	}
 
 	workspace := args[0]
 	s, err := ctx.(*context).Config.GetSection(fmt.Sprintf("workspace.%s", workspace))
 	if err != nil {
-		return fmt.Errorf("log: %s does not exist: %v", workspace, err)
+		return fmt.Errorf("%s does not exist: %v", workspace, err)
 	}
 
 	errChan := make(chan error)
@@ -47,15 +47,15 @@ func (cmd *logCommand) Run(ctx cmd.Context, args []string) error {
 	for _, repo := range repos {
 		r, err := git.PlainOpen(repo)
 		if err != nil {
-			return fmt.Errorf("log: unable to open repo: %v", err)
+			return fmt.Errorf("unable to open repo: %v", err)
 		}
 		ref, err := r.Head()
 		if err != nil {
-			return fmt.Errorf("log: unable to get ref HEAD: %v", err)
+			return fmt.Errorf("unable to get ref HEAD: %v", err)
 		}
 		ci, err := r.Log(&git.LogOptions{From: ref.Hash()})
 		if err != nil {
-			return fmt.Errorf("log: unable to get commit iter: %v", err)
+			return fmt.Errorf("unable to get commit iter: %v", err)
 		}
 
 		wg.Add(1)

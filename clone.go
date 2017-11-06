@@ -33,7 +33,7 @@ func (cmd *cloneCommand) Register(*flag.FlagSet) {}
 
 func (cmd *cloneCommand) Run(ctx cmd.Context, args []string) error {
 	if len(args) < 2 {
-		return fmt.Errorf("clone: not enough arguments provided")
+		return fmt.Errorf("not enough arguments provided")
 	}
 
 	workspace := args[0]
@@ -48,17 +48,17 @@ func (cmd *cloneCommand) Run(ctx cmd.Context, args []string) error {
 	repos := s.Key("repos").Strings(",")
 
 	if contains(repos, path) {
-		return fmt.Errorf("clone: %s already exists in %s workspace", url, workspace)
+		return fmt.Errorf("%s already exists in %s workspace", url, workspace)
 	}
 
 	ep, err := transport.NewEndpoint(url)
 	if err != nil {
-		return fmt.Errorf("clone: %v", err)
+		return fmt.Errorf("%v", err)
 	}
 
 	auth, err := createAuth(ep)
 	if err != nil {
-		return fmt.Errorf("clone: %v", err)
+		return fmt.Errorf("%v", err)
 	}
 
 	opts := &git.CloneOptions{
@@ -70,10 +70,10 @@ func (cmd *cloneCommand) Run(ctx cmd.Context, args []string) error {
 	if _, err := git.PlainClone(path, false, opts); err != nil {
 		switch err {
 		case git.ErrRepositoryAlreadyExists:
-			return fmt.Errorf("clone: failed to clone %s: %v", url, err)
+			return fmt.Errorf("failed to clone %s: %v", url, err)
 		default:
 			if err := os.RemoveAll(path); err != nil {
-				return fmt.Errorf("clone: failed to remove %s: %v", path, err)
+				return fmt.Errorf("failed to remove %s: %v", path, err)
 			}
 		}
 	}
