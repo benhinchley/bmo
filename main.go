@@ -17,6 +17,7 @@ func main() {
 		&cloneCommand{},
 		&logCommand{},
 		&statusCommand{},
+		&addCommand{},
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
