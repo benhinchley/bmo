@@ -7,6 +7,8 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/benhinchley/cmd"
+
 	git "gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/object"
 )
@@ -28,13 +30,13 @@ func (cmd *logCommand) Register(fs *flag.FlagSet) {
 	fs.BoolVar(&cmd.oneline, "oneline", false, "mimics \"git log --oneline\"")
 }
 
-func (cmd *logCommand) Run(ctx *context, args []string) error {
+func (cmd *logCommand) Run(ctx cmd.Context, args []string) error {
 	if len(args) < 1 {
 		return fmt.Errorf("log: not enough arguments provided")
 	}
 
 	workspace := args[0]
-	s, err := ctx.Config.GetSection(fmt.Sprintf("workspace.%s", workspace))
+	s, err := ctx.(*context).Config.GetSection(fmt.Sprintf("workspace.%s", workspace))
 	if err != nil {
 		return fmt.Errorf("log: %s does not exist: %v", workspace, err)
 	}
@@ -69,7 +71,7 @@ func (cmd *logCommand) Run(ctx *context, args []string) error {
 					msg = strings.TrimSpace(msg) + "\n"
 				}
 
-				ctx.Out.Println(msg)
+				ctx.Stdout().Println(msg)
 				return nil
 			}); err != nil {
 				errChan <- err

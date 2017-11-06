@@ -8,6 +8,8 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/benhinchley/cmd"
+
 	git "gopkg.in/src-d/go-git.v4"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport"
 	"gopkg.in/src-d/go-git.v4/plumbing/transport/ssh"
@@ -29,20 +31,20 @@ func (cmd *cloneCommand) Desc() string           { return strings.TrimSpace(clon
 func (cmd *cloneCommand) Help() string           { return strings.TrimSpace(cloneHelp) }
 func (cmd *cloneCommand) Register(*flag.FlagSet) {}
 
-func (cmd *cloneCommand) Run(ctx *context, args []string) error {
+func (cmd *cloneCommand) Run(ctx cmd.Context, args []string) error {
 	if len(args) < 2 {
 		return fmt.Errorf("clone: not enough arguments provided")
 	}
 
 	workspace := args[0]
 	url := args[1]
-	path := filepath.Join(ctx.WorkingDir, filepath.Base(gitURL.FindStringSubmatch(url)[7]))
+	path := filepath.Join(ctx.(*context).WorkingDir, filepath.Base(gitURL.FindStringSubmatch(url)[7]))
 
 	if len(args) == 3 {
 		path = args[2]
 	}
 
-	s := ctx.Config.Section(fmt.Sprintf("workspace.%s", workspace))
+	s := ctx.(*context).Config.Section(fmt.Sprintf("workspace.%s", workspace))
 	repos := s.Key("repos").Strings(",")
 
 	if contains(repos, path) {
@@ -62,7 +64,7 @@ func (cmd *cloneCommand) Run(ctx *context, args []string) error {
 	opts := &git.CloneOptions{
 		URL:      url,
 		Auth:     auth,
-		Progress: ctx.RawErr,
+		Progress: ctx.(*context).RawErr,
 	}
 
 	if _, err := git.PlainClone(path, false, opts); err != nil {

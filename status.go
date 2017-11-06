@@ -9,6 +9,8 @@ import (
 	"sync"
 	"text/tabwriter"
 
+	"github.com/benhinchley/cmd"
+
 	git "gopkg.in/src-d/go-git.v4"
 )
 
@@ -29,13 +31,13 @@ func (cmd *statusCommand) Register(fs *flag.FlagSet) {
 	fs.BoolVar(&cmd.short, "short", false, "Give the output in the short-format.")
 }
 
-func (cmd *statusCommand) Run(ctx *context, args []string) error {
+func (cmd *statusCommand) Run(ctx cmd.Context, args []string) error {
 	if len(args) < 1 {
 		return fmt.Errorf("status: not enough arguments provided")
 	}
 
 	workspace := args[0]
-	s, err := ctx.Config.GetSection(fmt.Sprintf("workspace.%s", workspace))
+	s, err := ctx.(*context).Config.GetSection(fmt.Sprintf("workspace.%s", workspace))
 	if err != nil {
 		return fmt.Errorf("status: %s does not exist: %v", workspace, err)
 	}
@@ -62,20 +64,20 @@ func (cmd *statusCommand) Run(ctx *context, args []string) error {
 
 			if cmd.short {
 				if len(ws) == 0 {
-					ctx.Out.Printf("[%s] nothing to commit, working tree clean\n", filepath.Base(repo))
+					ctx.Stdout().Printf("[%s] nothing to commit, working tree clean\n", filepath.Base(repo))
 					return
 				}
 
 				for file, status := range ws {
-					ctx.Out.Printf("[%s] %s%s %s", filepath.Base(repo), string(status.Staging), string(status.Worktree), file)
+					ctx.Stdout().Printf("[%s] %s%s %s", filepath.Base(repo), string(status.Staging), string(status.Worktree), file)
 				}
 				return
 			}
 
 			if len(ws) == 0 {
-				ctx.Out.Printf("Repository: %s\n", filepath.Base(repo))
-				ctx.Out.Println("nothing to commit, working tree clean")
-				ctx.Out.Println("")
+				ctx.Stdout().Printf("Repository: %s\n", filepath.Base(repo))
+				ctx.Stdout().Println("nothing to commit, working tree clean")
+				ctx.Stdout().Println("")
 				return
 			}
 
@@ -126,21 +128,21 @@ func (cmd *statusCommand) Run(ctx *context, args []string) error {
 				utw.Flush()
 			}
 
-			ctx.Out.Printf("Repository: %s\n", filepath.Base(repo))
+			ctx.Stdout().Printf("Repository: %s\n", filepath.Base(repo))
 			if len(staged) > 0 {
-				ctx.Out.Println("Changes to be committed:")
-				ctx.Out.Println("")
-				ctx.Out.Println(sb.String())
+				ctx.Stdout().Println("Changes to be committed:")
+				ctx.Stdout().Println("")
+				ctx.Stdout().Println(sb.String())
 			}
 			if len(unstaged) > 0 {
-				ctx.Out.Println("Changes not staged for commit:")
-				ctx.Out.Println("")
-				ctx.Out.Println(unsb.String())
+				ctx.Stdout().Println("Changes not staged for commit:")
+				ctx.Stdout().Println("")
+				ctx.Stdout().Println(unsb.String())
 			}
 			if len(untracked) > 0 {
-				ctx.Out.Println("Untracked Files:")
-				ctx.Out.Println("")
-				ctx.Out.Println(utb.String())
+				ctx.Stdout().Println("Untracked Files:")
+				ctx.Stdout().Println("")
+				ctx.Stdout().Println(utb.String())
 			}
 		}(repo, st)
 	}

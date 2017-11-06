@@ -1,5 +1,5 @@
 # bmo
-> work on lots of repos like it was a monorepo
+> work on lots of repos as if they were a monorepo
 
 # WIP: This is the opposite of stable, and not complete
 
