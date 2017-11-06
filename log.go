@@ -63,7 +63,7 @@ func (cmd *logCommand) Run(ctx *context, args []string) error {
 				msg := fmt.Sprintf("[%s] %s %s", filepath.Base(repo), c.Hash.String()[:7],
 					strings.TrimSpace(strings.Split(c.Message, "\n")[0]))
 				if !cmd.oneline {
-					msg = fmt.Sprintf("commit %s\nRepo:   %s\nAuthor: %s\nDate:   %s\n\n%s\n",
+					msg = fmt.Sprintf("commit %s\nRepository: %s\nAuthor:     %s\nDate:       %s\n\n%s\n",
 						c.Hash, filepath.Base(repo), c.Author.String(),
 						c.Author.When.Format(object.DateFormat), indent(c.Message))
 					msg = strings.TrimSpace(msg) + "\n"
