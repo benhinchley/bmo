@@ -85,10 +85,6 @@ type context struct {
 	out, err       *log.Logger
 }
 
-func (c *context) Stdout() *log.Logger {
-	return c.out
-}
-
-func (c *context) Stderr() *log.Logger {
-	return c.err
-}
+// Implement cmd.Context
+func (c *context) Stdout() *log.Logger { return c.out }
+func (c *context) Stderr() *log.Logger { return c.err }
